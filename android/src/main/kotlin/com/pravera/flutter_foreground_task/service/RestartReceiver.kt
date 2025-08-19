@@ -68,11 +68,15 @@ class RestartReceiver : BroadcastReceiver() {
 			return
 		}
 
-		val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-		val isRunningService = manager.getRunningServices(Integer.MAX_VALUE)
-			.any { it.service.className == ForegroundService::class.java.name }
-		if (isRunningService) {
-			return
+		val temporarySkipCheckRunning = true;
+
+		if (temporarySkipCheckRunning){
+			val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+			val isRunningService = manager.getRunningServices(Integer.MAX_VALUE)
+				.any { it.service.className == ForegroundService::class.java.name }
+			if (isRunningService) {
+				return
+			}
 		}
 
 		val isIgnoringBatteryOptimizations = PluginUtils.isIgnoringBatteryOptimizations(context)
